@@ -4,8 +4,8 @@ Building and Monitoring a Containerized URL Shortener Service
 
 ## Team Members
 
-- Ahmed Emadeldien Mohamed Elhamaly
-- Ahmed Ibrahim Adawy (Leader)
+- Ahmed Ibrahim Adawy Mohamed
+- Ahmed Emadeldien Mohamed Elhamaly 
 - Ahmed Kamal Ibrahim Elashmay
 
 ## Objective
