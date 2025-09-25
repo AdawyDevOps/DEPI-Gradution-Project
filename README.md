@@ -9,6 +9,8 @@ Building and Monitoring a Containerized URL Shortener Service
 - Ahmed Kamal Ibrahim Elashmay
 - Ahmed Mohamed Hassan Nassef
 - Youssef Ahmed ezzat elsaadany
+- Peter Osama Said Ibrahim
+- Abdelrahman Sadek Aborwash
 
 ## Objective
 
