@@ -1,8 +1,8 @@
-# Project Name
+# 🚀 Project Name
 
 Building and Monitoring a Containerized URL Shortener Service
 
-## Team Members
+## 👥 Team Members
 
 - Ahmed Ibrahim Adawy Mohamed
 - Ahmed Emadeldien Mohamed Elhamaly 
@@ -12,15 +12,15 @@ Building and Monitoring a Containerized URL Shortener Service
 - Peter Osama Said Ibrahim
 - Abdelrahman Sadek Aborwash
 
-## Project Objectives
+## 🎯 Project Objectives
 
 Develop, containerize, and monitor a fully functional URL shortener service. The entire environment—including the application and monitoring stack (Prometheus, Grafana)—will run locally using Docker.
 
-## Project Scope
+## 📌 Project Scope
 
 This project aims to develop and containerize a lightweight URL shortener webservice using SQLite for data storage. The service will be instrumented to expose custom Prometheus metrics through a dedicated /metrics endpoint. Prometheus will be configured to scrape and store these metrics, while Grafana will be integrated to provide real-time visualization and actionable dashboards. The stack will also include alerting rules and persistent storage through Docker volumes to ensure reliability across restarts. Comprehensive documentation, including API specifications and setup instructions, will accompany the final delivery.
 
-## Project Plan
+## 📝 Project Plan
 
 - Week 1 Application Development & Containerization  
 Build the core URL shortener webservice with SQLite storage. Implement the POST /shorten and GET /<short_code> endpoints. Write a Dockerfile to containerize the service and create an initial docker-compose.yml for local deployment.
