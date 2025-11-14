@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calorie-frontend
+  namespace: calorie-chronicle
+  labels:
+    app: calorie-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: calorie-frontend
+  template:
+    metadata:
+      labels:
+        app: calorie-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: your-registry/calorie-frontend:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: REACT_APP_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: REACT_APP_API_URL
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5

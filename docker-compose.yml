@@ -1,0 +1,91 @@
+services:
+  # قاعدة البيانات MySQL
+  database:
+    image: mysql:8.0
+    container_name: calorie_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: calorie_chronicle
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # الباك إند
+  backend:
+    build: ./backend
+    container_name: calorie_backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: database
+      DB_USER: app_user
+      DB_PASSWORD: app_password
+      DB_NAME: calorie_chronicle
+      JWT_SECRET: your-jwt-secret-123
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - database
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.3'
+        reservations:
+          memory: 128M
+          cpus: '0.1'
+
+  # الفرونت إند
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: calorie_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:5000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        limits:
+          memory: 192M
+          cpus: '0.2'
+        reservations:
+          memory: 96M
+          cpus: '0.05'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
