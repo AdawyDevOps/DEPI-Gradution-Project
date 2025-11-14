@@ -1,73 +1,235 @@
-# Welcome to your Lovable project
+# Calorie Chronicle - Calorie Tracking Application
 
-## Project info
 
-**URL**: https://lovable.dev/projects/b670cf30-ffc7-4131-8520-09b6ff887c58
+A comprehensive full-stack calorie tracking application built with modern technologies including React, Node.js, MongoDB, and deployed with Kubernetes.
 
-## How can I edit this code?
+## 🚀 Features
 
-There are several ways of editing your application.
+- **🔐 User Authentication** - Secure register and login system with JWT
+- **📊 Calorie Tracking** - Add, edit, and manage daily food entries
+- **📈 Dashboard Analytics** - Visualize daily calorie statistics and progress
+- **👤 Profile Management** - User profile with personal goals and settings
+- **📱 Responsive Design** - Works seamlessly on desktop and mobile devices
+- **🐳 Containerized** - Docker containers for easy deployment
+- **☸️ Kubernetes Ready** - Production-grade orchestration
 
-**Use Lovable**
+## 🛠️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b670cf30-ffc7-4131-8520-09b6ff887c58) and start prompting.
+### Frontend
+- **React.js** - Modern UI framework
+- **Vite** - Fast build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Context API** - State management
 
-Changes made via Lovable will be committed automatically to this repo.
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web application framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - MongoDB object modeling
+- **JWT** - JSON Web Tokens for authentication
+- **bcrypt** - Password hashing
 
-**Use your preferred IDE**
+### Deployment & Infrastructure
+- **Docker** - Containerization
+- **Kubernetes** - Container orchestration
+- **Nginx** - Web server and reverse proxy
+- **MongoDB** - Database service
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 📁 Project Structure
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```
+calorie-chronicle/
+├── 📁 backend/                 # Node.js API Server
+│   ├── config/                # Database configuration
+│   ├── middleware/            # Auth and validation
+│   ├── models/                # MongoDB models (User, FoodEntry, Meal)
+│   ├── routes/                # API routes (auth, foodEntries, meals, users)
+│   └── server.js              # Entry point
+├── 📁 frontend/               # React Application
+│   ├── src/
+│   │   ├── components/        # Reusable components
+│   │   ├── pages/            # Page components
+│   │   ├── context/          # React context
+│   │   ├── services/         # API services
+│   │   └── styles/           # CSS files
+│   └── nginx.conf            # Nginx configuration
+├── 📁 k8s/                   # Kubernetes Manifests
+│   ├── base/                 # Base configurations
+│   ├── backend/              # Backend deployment
+│   ├── frontend/             # Frontend deployment
+│   ├── mongodb/              # Database setup
+│   └── ingress/              # Networking
+└── 📁 database/              # Database initialization
+```
 
-Follow these steps:
+## 🏃‍♂️ Quick Start
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Prerequisites
+- Node.js (v16 or higher)
+- MongoDB
+- Docker & Docker Compose (for container deployment)
+- Kubernetes cluster (for production deployment)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Local Development
 
-# Step 3: Install the necessary dependencies.
-npm i
+#### Backend Setup
+```bash
+cd backend
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Create .env file
+echo "MONGODB_URI=mongodb://localhost:27017/calorieapp" >> .env
+echo "JWT_SECRET=your_jwt_secret_here" >> .env
+echo "PORT=5000" >> .env
+
+npm start
+```
+
+#### Frontend Setup
+```bash
+cd frontend
+npm install
+
+# Create .env file
+echo "VITE_API_URL=http://localhost:5000" >> .env
+
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Docker Deployment
+```bash
+# Using Docker Compose
+docker-compose up -d
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+# Or build individually
+docker build -t calorie-backend ./backend
+docker build -t calorie-frontend ./frontend
+```
 
-**Use GitHub Codespaces**
+### Kubernetes Deployment
+```bash
+# Deploy entire stack
+kubectl apply -k k8s/
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Check status
+kubectl get all -n calorie-chronicle
 
-## What technologies are used for this project?
+# View logs
+kubectl logs -f deployment/calorie-backend -n calorie-chronicle
+```
 
-This project is built with:
+## 📊 API Endpoints
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+| Method | Endpoint | Description | Authentication |
+|--------|----------|-------------|----------------|
+| POST | `/api/auth/register` | User registration | Public |
+| POST | `/api/auth/login` | User login | Public |
+| GET | `/api/food-entries` | Get user's food entries | Required |
+| POST | `/api/food-entries` | Add new food entry | Required |
+| PUT | `/api/food-entries/:id` | Update food entry | Required |
+| DELETE | `/api/food-entries/:id` | Delete food entry | Required |
+| GET | `/api/meals` | Get user's meals | Required |
+| GET | `/api/profile` | Get user profile | Required |
+| PUT | `/api/profile` | Update user profile | Required |
 
-## How can I deploy this project?
+## ⚙️ Environment Variables
 
-Simply open [Lovable](https://lovable.dev/projects/b670cf30-ffc7-4131-8520-09b6ff887c58) and click on Share -> Publish.
+### Backend (.env)
+```env
+MONGODB_URI=mongodb://mongodb:27017/calorieapp
+JWT_SECRET=your_super_secret_jwt_key
+PORT=5000
+NODE_ENV=production
+```
 
-## Can I connect a custom domain to my Lovable project?
+### Frontend (.env)
+```env
+VITE_API_URL=http://localhost:5000
+```
 
-Yes, you can!
+## 🐳 Docker & Kubernetes
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Docker Images
+```dockerfile
+# Backend Dockerfile
+FROM node:16-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5000
+CMD ["npm", "start"]
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Kubernetes Services
+- **Namespace**: `calorie-chronicle`
+- **MongoDB**: Stateful service with persistent storage
+- **Backend**: Node.js API with health checks
+- **Frontend**: React app served by Nginx
+- **Ingress**: Route traffic with path-based routing
+
+## 🚀 Deployment
+
+### Production Deployment with Kubernetes
+```bash
+# Build and push images
+docker build -t your-registry/calorie-backend:latest ./backend
+docker build -t your-registry/calorie-frontend:latest ./frontend
+docker push your-registry/calorie-backend:latest
+docker push your-registry/calorie-frontend:latest
+
+# Deploy to Kubernetes
+kubectl apply -k k8s/
+
+# Access the application
+kubectl get ingress -n calorie-chronicle
+```
+
+## 📸 Screenshots
+
+*(Add your application screenshots here)*
+
+- **Dashboard**: View daily calorie intake and goals
+- **Food Entry**: Add and manage food consumption
+- **Profile**: User settings and goal management
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit pull requests or open issues for bugs and feature requests.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Ahmed Hamaly**
+- GitHub: [@hamaly008](https://github.com/hamaly008)
+- Email: ahmedhaamaly008@gmail.com
+
+## 🙏 Acknowledgments
+
+- React community for excellent documentation
+- MongoDB for robust database solutions
+- Kubernetes for powerful container orchestration
+- Vite team for fast build tools
+
+---
+
+**Built with ❤️ using React, Node.js, MongoDB, and Kubernetes**
+
+⭐ Star this repo if you found it helpful!
+
+---
+
+
+
+---
+
+*For questions and support, please open an issue or contact the author.*
