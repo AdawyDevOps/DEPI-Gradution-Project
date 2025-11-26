@@ -8,4 +8,6 @@ data:
   FRONTEND_URL: "http://calorie-frontend:80"
   BACKEND_URL: "http://calorie-backend:5000"
   MONGODB_URI: "mongodb://mongodb:27017/calorieapp"
-  REACT_APP_API_URL: "http://calorie-backend:5000"
+  
+  # هذا المفتاح هو الذي يجب أن يتطابق مع ما يتوقعه Deployment
+  VITE_API_URL: "http://calorie-backend:5000" # <--- تم تعديل الاسم هنا
