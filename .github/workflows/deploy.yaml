@@ -1,0 +1,59 @@
+name: CD - Deploy to Kubernetes
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2) Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      # 3) Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/calorie-frontend:${GITHUB_SHA} ./frontend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/calorie-backend:${GITHUB_SHA} ./backend
+
+      # 4) Push Docker image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/calorie-frontend:${GITHUB_SHA}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/calorie-backend:${GITHUB_SHA}
+
+      # 5) Setup kubectl
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+
+      # 6) Load kubeconfig
+      - name: Load kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      # 7) Update Kubernetes manifests with new image tags
+      - name: Update image tags
+        run: |
+          sed -i "s|IMAGE_TAG_FRONTEND|${GITHUB_SHA}|g" k8s/frontend-deployment.yaml
+          sed -i "s|IMAGE_TAG_BACKEND|${GITHUB_SHA}|g" k8s/backend-deployment.yaml
+
+      # 8) Apply manifests
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f k8s/
+
+      # 9) Check rollout status
+      - name: Rolling update status
+        run: |
+          kubectl rollout status deployment/frontend
+          kubectl rollout status deployment/backend
